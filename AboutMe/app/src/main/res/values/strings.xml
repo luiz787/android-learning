@@ -8,4 +8,6 @@
 \n\nbut also the leap into electronic typesetting, remaining essentially unchanged.
 \n\nIt was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
 \n\nwith desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="what_is_your_nickname">What is your nickname?</string>
+    <string name="done">Done</string>
 </resources>
