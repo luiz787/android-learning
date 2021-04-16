@@ -1,6 +1,9 @@
 package com.example.android.guesstheword.screens.game
 
+import android.os.Build
 import android.os.CountDownTimer
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.text.format.DateUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -13,7 +16,20 @@ class GameViewModel: ViewModel() {
     companion object {
         private const val DONE = 0L
         private const val ONE_SECOND = 1_000L
+        private const val FIVE_SECONDS = 5_000L
         private const val COUNTDOWN_TIME = 20_000L
+
+        private val CORRECT_BUZZ_PATTERN = longArrayOf(100, 100, 100, 100, 100, 100)
+        private val PANIC_BUZZ_PATTERN = longArrayOf(0, 200)
+        private val GAME_OVER_BUZZ_PATTERN = longArrayOf(0, 2000)
+        private val NO_BUZZ_PATTERN = longArrayOf(0)
+    }
+
+    enum class BuzzType(val pattern: LongArray) {
+        CORRECT(CORRECT_BUZZ_PATTERN),
+        GAME_OVER(GAME_OVER_BUZZ_PATTERN),
+        COUNTDOWN_PANIC(PANIC_BUZZ_PATTERN),
+        NO_BUZZ(NO_BUZZ_PATTERN)
     }
 
     private val timer: CountDownTimer
@@ -32,12 +48,16 @@ class GameViewModel: ViewModel() {
         get() = _eventGameFinish
 
     private val _currentTime = MutableLiveData<Long>()
-    val currentTime: LiveData<Long>
+    private val currentTime: LiveData<Long>
         get() = _currentTime
 
-    val currentTimeString = Transformations.map(currentTime, { time ->
+    private val _buzz = MutableLiveData<BuzzType>()
+    val buzz: LiveData<BuzzType>
+        get() = _buzz
+
+    val currentTimeString = Transformations.map(currentTime) { time ->
         DateUtils.formatElapsedTime(time)
-    })
+    }
 
     // The list of words - the front of the list is the next word to guess
     private lateinit var wordList: MutableList<String>
@@ -53,11 +73,15 @@ class GameViewModel: ViewModel() {
             override fun onTick(millisUntilFinished: Long) {
                 Log.i("GameViewModel", "Updating timer to $millisUntilFinished")
                 _currentTime.value = millisUntilFinished / ONE_SECOND
+                if (millisUntilFinished <= FIVE_SECONDS) {
+                    _buzz.value = BuzzType.COUNTDOWN_PANIC
+                }
             }
 
             override fun onFinish() {
                 _currentTime.value = DONE
                 _eventGameFinish.value = true
+                _buzz.value = BuzzType.GAME_OVER
             }
         }
 
@@ -118,10 +142,15 @@ class GameViewModel: ViewModel() {
 
     fun onCorrect() {
         _score.value = score.value?.plus(1)
+        _buzz.value = BuzzType.CORRECT
         nextWord()
     }
 
     fun onGameFinishComplete() {
         _eventGameFinish.value = false
+    }
+
+    fun onBuzzComplete() {
+        _buzz.value = BuzzType.NO_BUZZ
     }
 }
