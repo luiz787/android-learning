@@ -60,6 +60,17 @@ class OnboardingViewModel : ViewModel() {
 
         Log.i("OnboardingViewModel", currentData.value.toString());
 
+        refreshCurrentActiveIcon()
+    }
+
+    fun goToStep(step: Int) {
+        _currentStep.value = step
+        _currentData.value = data[step]
+
+        refreshCurrentActiveIcon()
+    }
+
+    private fun refreshCurrentActiveIcon() {
         for (index in icons.indices) {
             if (isActive(index)) {
                 Log.i("OnboardingViewModel", "$index")

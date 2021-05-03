@@ -88,6 +88,7 @@
                     android:layout_marginStart="24dp"
                     android:backgroundTint="#FFFFFF"
                     android:src="@drawable/ic_baseline_circle_24"
+                    android:onClick="@{() -> viewModel.goToStep(0)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -99,6 +100,7 @@
                     android:layout_marginStart="4dp"
                     android:backgroundTint="#FFFFFF"
                     android:src="@drawable/ic_baseline_circle_grey"
+                    android:onClick="@{() -> viewModel.goToStep(1)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageButton"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -110,6 +112,7 @@
                     android:layout_marginStart="4dp"
                     android:backgroundTint="#FFFFFF"
                     android:src="@drawable/ic_baseline_circle_grey"
+                    android:onClick="@{() -> viewModel.goToStep(2)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageButton2"
                     app:layout_constraintTop_toTopOf="parent" />
