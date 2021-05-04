@@ -1,6 +1,5 @@
 package com.example.financeapp.login
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,6 @@ class SignupFragment : Fragment() {
 
     private lateinit var viewModel: SignupViewModel
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
